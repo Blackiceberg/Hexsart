@@ -37,7 +37,7 @@ h1 a {
 .photographer_section {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    margin: 30px auto;
+    margin: 0 auto;
     gap: 10px;
     width: 90%;
 }
@@ -48,6 +48,7 @@ h1 a {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: relative;
 }
 
 .photographer_section article h2 {
@@ -56,8 +57,13 @@ h1 a {
     font-size: 36px;
     line-height: 47px;
     text-align: center;
-    color: #D3573C;
+    color: white;
+    background-color: black;
     margin: 0;
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+
 }
 
 .photographer_section article h3 {

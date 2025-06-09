@@ -8,13 +8,28 @@
     height: 100%;
     object-fit: cover;
     width: 100%;
-    margin-bottom: 1em;
   }
 
 
 .overlay{
+  position: absolute;
+  width: 95%;
+  height: 95%;
+  background-color: #00000085;
+  opacity: 0;
+}
 
-  display: none;
+.overlay:hover{
+  opacity: 1;
+}
+
+.sous-titre-overlay{
+  display: flex;
+}
+
+.sous-titre-overlay a{
+  background-color: black;
+  color: white;
 }
 
 .vitrine {
@@ -27,4 +42,14 @@
  width: 100%;
  height: 540px;
  object-fit: cover;
+}
+
+.vitrine p{
+  background-color: black;
+  color: white;
+  padding: 1em;
+}
+
+*{
+  text-decoration: none;
 }

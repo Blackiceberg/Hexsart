@@ -6,14 +6,15 @@ function photographerFactory(data) {
   function getUserCardDOM() {
     const article = document.createElement("article");
     const img = document.createElement("img");
-    const span = document.createElement("span");
-    span.setAttribute("class",`overlay` )
+    const span = document.createElement("span")
+    span.setAttribute("class",`sous-titre-overlay` )
     img.setAttribute("src", picture);
     img.setAttribute("class", `circle_img`);
     img.setAttribute("alt", name);
     const pageProfil = "photographer.html?id=" + id;
     const link = document.createElement("a");
     link.setAttribute("href", pageProfil);
+    link.setAttribute("class",`overlay` )
 
     const h2 = document.createElement("h2");
     const h3 = document.createElement("h3");
@@ -26,13 +27,10 @@ function photographerFactory(data) {
     h4.textContent = tagline;
     h5.textContent = `${price}€/jour`;
 
+    article.appendChild(img),
     article.appendChild(link),
-      link.appendChild(img),
-      article.appendChild(span),
-      span.appendChild(h2),
-      span.appendChild(h3),
-      span.appendChild(h4),
-      span.appendChild(h5);
+    link.appendChild(span),
+    span.appendChild(h2);
 
     return article;
   }
