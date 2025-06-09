@@ -1,11 +1,9 @@
 function galeryFactory(data) {
-  const { id, photographerId, title, image, video, likes, date, price } = data;
+  const { id, photographerId, title, image, likes, date, price } = data;
   let srcMedia = `assets/images/photographers/${photographerId}/`;
   if (image) {
     srcMedia += image;
-  } else {
-    srcMedia += video;
-  }
+  } 
 
   /** ---------- CREATION DU GABARIT DE LA GALERIE DES MEDIAS DU PHOTOGRAPHE ---------- */
 
@@ -28,63 +26,24 @@ function galeryFactory(data) {
     legendTitle.classList.add("legend-title");
     legendTitle.textContent = title;
 
-    /** Like */
-
-    const like = document.createElement("b");
-    like.classList.add("like");
-    like.setAttribute("id", "likeBTN");
-    like.textContent = likes;
-
-    /** Picto_Like */
-    const pictoLike = document.createElement("a");
-    pictoLike.classList.add("fa-solid", "fa-heart", "dislike");
-    const spanTarif = document.getElementById("tarif");
-    spanTarif.textContent = `${price} €/Jour`;
-
-    pictoLike.onclick = function () {
-      let compteurLike = document.getElementById("totalLikes");
-      if (pictoLike.classList.contains("dislike")) {
-        pictoLike.classList.remove("dislike");
-        like.textContent = likes + 1;
-        compteurLike.textContent = parseInt(compteurLike.innerHTML) + 1;
-        console.log(likes);
-      } else {
-        pictoLike.classList.add("dislike");
-        like.textContent = likes + 1 - 1;
-        compteurLike.textContent = parseInt(compteurLike.innerHTML) - 1;
-
-        console.log(likes);
-      }
-    };
+    
 
     const galeryMedia = document.getElementById("galeryMedia");
 
     /** MEDIAS => vidéo ou image */
     const modal = document.getElementById("galery_modal");
     figureGalery.appendChild(linkGalery);
-    if (image) {
-      const imgPhoto = document.createElement("img");
-      imgPhoto.classList.add("galery-medias");
-      imgPhoto.setAttribute("data-mediaid", id);
-      imgPhoto.setAttribute("src", srcMedia);
-      imgPhoto.setAttribute("alt", title + ", closeup view");
-      imgPhoto.setAttribute("role", "link");
-      imgPhoto.setAttribute("tilte", title);
-      imgPhoto.setAttribute("tabindex", 0);
-      linkGalery.appendChild(imgPhoto);
-    } else {
-      const vidPhoto = document.createElement("video");
-      vidPhoto.classList.add("galery-medias");
-      vidPhoto.setAttribute("type", "video/mp4");
-      vidPhoto.setAttribute("src", srcMedia);
-      vidPhoto.setAttribute("data-mediaid", id);
-      vidPhoto.setAttribute("alt", title + ", closeup view");
-      vidPhoto.setAttribute("role", "link");
-      vidPhoto.setAttribute("tabindex", 0);
-      vidPhoto.setAttribute("autoplay", "true");
-
-      linkGalery.insertBefore(vidPhoto, linkGalery.firstChild);
-    }
+    
+    const imgPhoto = document.createElement("img");
+    imgPhoto.classList.add("galery-medias");
+    imgPhoto.setAttribute("data-mediaid", id);
+    imgPhoto.setAttribute("src", srcMedia);
+    imgPhoto.setAttribute("alt", title + ", closeup view");
+    imgPhoto.setAttribute("role", "link");
+    imgPhoto.setAttribute("tilte", title);
+    imgPhoto.setAttribute("tabindex", 0);
+    linkGalery.appendChild(imgPhoto);
+    
 
     const galerieContent = document.getElementById("modal-content");
     const items = document.querySelectorAll('[role="link"]');
@@ -143,7 +102,6 @@ function galeryFactory(data) {
       titreImgGalery.setAttribute("id", "h3Img");
       live.appendChild(titreImgGalery);
 
-      if (image) {
         const imgPhoto = document.createElement("img");
         imgPhoto.classList.add("galery-medias");
         imgPhoto.classList.add("modal-content");
@@ -155,21 +113,7 @@ function galeryFactory(data) {
 
         imgPhoto.setAttribute("tabindex", 0);
         live.appendChild(imgPhoto);
-      } else {
-        const vidPhoto = document.createElement("video");
-        vidPhoto.classList.add("galery-medias");
-        vidPhoto.classList.add("modal-content");
-        vidPhoto.setAttribute("id", "imgPhoto");
-        vidPhoto.classList.add("class", "mediaShow");
-        vidPhoto.setAttribute("type", "video/mp4");
-        vidPhoto.setAttribute("src", srcMedia);
-        vidPhoto.setAttribute("data-mediaid", id);
-        vidPhoto.setAttribute("alt", title + ", closeup view");
-        vidPhoto.setAttribute("role", "link");
-        vidPhoto.setAttribute("tabindex", 0);
-        vidPhoto.setAttribute("autoplay", "true");
-        live.appendChild(vidPhoto);
-      }
+
       /**contenu de la modal galery */
       //modal.appendChild(clonelinkGalery);
     };
@@ -182,9 +126,6 @@ function galeryFactory(data) {
 
     figureGalery.appendChild(legendGalery).lastChild;
     legendGalery.appendChild(legendTitle);
-    legendGalery.appendChild(like);
-    legendGalery.appendChild(pictoLike);
-    galeryMedia.appendChild(compteurLike);
 
     //suivant.onclick = function slideSuivant() {
     // var elemShow = document.getElementById("showDiv");
@@ -211,8 +152,6 @@ function galeryFactory(data) {
     photographerId,
     title,
     image,
-    video,
-    likes,
     date,
     price,
     srcMedia,

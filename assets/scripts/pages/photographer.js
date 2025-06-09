@@ -42,71 +42,6 @@ async function displayMedia(medias) {
       galeryMedia.appendChild(UserGaleryDOM);
     }
   });
-  var compteurLike = document.getElementById("totalLikes");
-  compteurLike.textContent = totalLike;
-}
-
-const menuBTN = document.getElementById("curent-order");
-const dataBTN = document.getElementById("data");
-const popularyBTN = document.getElementById("populary");
-const titleBTN = document.getElementById("title");
-const valueBTN = document.getElementById("data-order");
-console.log();
-let btn = ["Date", "Populaire", "Titre"];
-menuBTN.onclick = function () {
-  switchBTN();
-};
-popularyBTN.onclick = function () {
-  popularyBTN.classList.add("numberOne");
-  popularyBTN.classList.remove("numberTwo");
-  popularyBTN.classList.remove("numberThree");
-
-  dataBTN.classList.add("numberTwo");
-  dataBTN.classList.remove("numberOne");
-  titleBTN.classList.remove("numberOne");
-  titleBTN.classList.add("numberThree");
-
-  menuBTN.innerHTML = btn[1];
-  switchBTN();
-};
-dataBTN.onclick = function () {
-  dataBTN.classList.add("numberOne");
-  dataBTN.classList.remove("numberTwo");
-  dataBTN.classList.remove("numberThree");
-
-  popularyBTN.classList.remove("numberOne");
-  popularyBTN.classList.add("numberTwo");
-  titleBTN.classList.remove("numberOne");
-  titleBTN.classList.add("numberThree");
-
-  menuBTN.innerHTML = btn[0];
-  switchBTN();
-};
-
-titleBTN.onclick = function () {
-  titleBTN.classList.remove("numberThree");
-  titleBTN.classList.add("numberOne");
-
-  popularyBTN.classList.remove("numberOne");
-  dataBTN.classList.remove("numberOne");
-
-  dataBTN.classList.add("numberThree");
-  popularyBTN.classList.add("numberTwo");
-
-  menuBTN.innerHTML = btn[2];
-
-  switchBTN();
-};
-
-function switchBTN() {
-  const switchBTN = document.getElementById("data-order");
-  if (switchBTN.style.display === "none") {
-    switchBTN.style.display = "flex";
-    valueBTN.style.zIndex = 200;
-  } else {
-    switchBTN.style.display = "none";
-    valueBTN.style.zIndex = -2;
-  }
 }
 
 function recupForm() {
@@ -121,4 +56,3 @@ function recupForm() {
 }
 
 initId();
-switchBTN();

@@ -51,26 +51,21 @@ function photographerFactory(data) {
     small.setAttribute("id", `photographer_small`);
 
     h1.textContent = name;
-    p.textContent = `${city}, ${country}`;
-    small.textContent = tagline;
 
     const button = document.createElement("button");
     const img = document.createElement("img");
 
-    button.setAttribute("onclick", `displayModal()`);
     button.setAttribute("class", `contact_button`);
     button.setAttribute("alt", `Contact Me`);
     img.setAttribute("class", `circle_img`);
     img.setAttribute("src", `${picture}`);
     img.setAttribute("alt", `photo de profil de ${name}">`);
 
-    button.textContent = `Contactez-moi`;
 
     section.appendChild(article),
       article.appendChild(h1),
       article.appendChild(p),
       article.appendChild(small),
-      section.appendChild(button),
       section.appendChild(img);
 
     const modal = document.createElement("div");

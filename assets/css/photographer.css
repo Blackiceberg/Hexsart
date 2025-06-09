@@ -106,14 +106,13 @@ form textarea{
 
 .photographer_profile{
     flex-flow: row wrap;
-    width: 300px;
+    width: 500px;
     margin: 0 0 0 1em;
 }
 
 .photographer_profile h1{
     font-size: 64px;
     line-height: 83px;
-    color: #D3573C;
     margin: 0;
 }
 
@@ -219,7 +218,7 @@ figure{
 }
 
 figcaption{
-    display: flex;
+    display: none;
 }
 .galery-medias {
     height: 300px;
@@ -302,6 +301,7 @@ a::before {
     min-height: 900px;
     transform: translate(-50%, -50%);
     z-index: -2;
+    object-fit: contain !important;
 }
 
 
@@ -336,7 +336,7 @@ a::before {
 }
 
 
-.mediaShow img:last-child, .mediaShow video:last-child{
+.mediaShow img:last-child{
     width: 900px;
     height: 600px;
     object-fit: cover;
@@ -346,7 +346,7 @@ a::before {
 .modal-content h3{
     font-size: 24px;
     font-weight: 400;
-    color: #901C1C;
+    color: #fff;
     position: absolute;
     bottom: -80px;
     left: 60px;    
