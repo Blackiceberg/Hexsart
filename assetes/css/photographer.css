@@ -1,0 +1,368 @@
+#contact_modal {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    z-index: 20;
+    background-color: rgba(0,0,0,0.4);
+    
+}
+
+.photograph-header {
+    background-color: #FAFAFA;
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2em;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.contact_button {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    padding: 11px;
+    width: 170px;
+    height: 70px;
+    border: none;
+    background-color: #901C1C;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal {
+    border-radius: 5px;
+    background-color: #DB8876;
+    width: 700px;
+    height: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 35px;
+    margin: 2em auto;
+}
+
+.modal header {
+    justify-content: space-between;
+    width: 100%;
+    display: block;
+}
+
+.modal header img {
+    cursor: pointer;
+    align-self: start;
+    position: relative;
+    left: 94%;   
+}
+
+.modal-header h2{
+    font-size: 64px;
+    font-weight: normal;
+    line-height: 70px;
+    color: #000000;
+    margin-top: 0;
+}
+
+form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+form label {
+    color: #312E2E;
+    font-size: 36px;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: self-start;
+    margin-bottom: 26px;
+}
+
+form input, textarea {
+    width: 100%;
+    height: 68px;
+    border: none;
+    border-radius: 5px;
+}
+
+form textarea{
+    height: 170px;
+    width: 100%;
+    max-height: 164px;
+}
+
+.photographer_profile{
+    flex-flow: row wrap;
+    width: 300px;
+    margin: 0 0 0 1em;
+}
+
+.photographer_profile h1{
+    font-size: 64px;
+    line-height: 83px;
+    color: #D3573C;
+    margin: 0;
+}
+
+.photographer_profile p{
+    font-size: 24px;
+    line-height: 31px; 
+    color: #901C1C;
+    margin: 0.5em 0;
+
+}
+.photographer_profile small{
+    font-size: 18px;
+    line-height: 23px;
+    color: #525252;
+    margin-bottom: 0;
+
+}
+
+
+/* Navigation */
+
+
+
+.nav{
+    display: flex;
+    position: relative;
+    z-index: 10;
+
+}
+
+.nav #data-order{
+    display: none;
+    flex-direction: column;
+}
+
+
+.nav #data-order{
+    background-color: #901C1C;
+    border-radius: 5px;
+    left: -8.4em;
+    position: relative;
+    z-index: -2;
+    border: solid 2px #901C1C;
+    width: 166.5px;
+}
+
+.nav #data-order button{
+    background-color: rgba(440, 432, 433, 0);
+    color: #FFFFFF;
+    width: 170px;
+    text-align: center;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    position: relative;
+    z-index: -1;
+    border-top: solid 1px #FFF;
+    border-radius: 0;
+}
+
+#data-order{
+    height: 170px;
+    width: 170px;
+    
+}
+
+#data-order button{
+    height: 200px;
+}
+
+#curent-order{
+    position: relative;
+    left: 2em;
+    background-color: #901C1C;
+    color:#FFFFFF;
+    width: 170px;
+    text-align: center;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    z-index: 20;
+}
+
+.nav #populary button{
+    border-radius: 0;
+}
+
+/*-------------Galery--------------*/
+
+#galeryMedia{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+figure{
+    margin-inline-end: 1.5em;
+    display: flex;
+    flex-direction: column;
+
+}
+
+figcaption{
+    display: flex;
+}
+.galery-medias {
+    height: 300px;
+    width: 350px;
+    object-fit: cover;
+    object-position: top;
+}
+
+.legend-title{
+font-size: 20px;
+color: #901C1C;
+flex: 2 1 auto;
+font-weight: 400;
+
+}
+
+
+.like{
+font-size: 20px;
+color: #901C1C;
+font-weight: 500;
+margin-right: 2px;
+}
+
+a::before {
+    color: #901C1C;
+    font-size: 20px;
+    line-height: 25px !important;
+    cursor: pointer;
+}
+
+/* Compteur Like */
+.compteur{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background: #DB8876;
+    width: 340px;
+    height: 20px;
+    font-size: 20px;
+    margin-right: 25px;
+    padding: 1em;
+    border-radius: 5px 5px 0 0;
+    text-align: center;
+    
+}
+
+.compteur i {
+    margin-right: 5em;
+    color: #000000;
+    cursor: pointer;
+}
+
+
+
+/*modal */
+
+.galeryModal{
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: white;
+    z-index: 10;
+}
+.show{
+    display: flex;
+    justify-content: center;
+}
+
+.modal-content{
+    width: 90%;
+    margin: auto;
+    max-height: 1200px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-height: 900px;
+    transform: translate(-50%, -50%);
+    z-index: -2;
+}
+
+
+.modal-content video{
+    width: 90%;
+}
+
+
+.close{
+    width: 42px;
+    right: 0;
+    position: absolute;
+    top: 0;
+  }
+
+.arrow {
+    position: absolute;
+    top: 50%;
+}
+
+.left{
+    left: 0%;
+    transform: rotate(180deg);
+}
+
+.right{
+    right: 0%;
+}
+
+.mediaShow{
+    display: flex;
+}
+
+
+.mediaShow img:last-child, .mediaShow video:last-child{
+    width: 900px;
+    height: 600px;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.modal-content h3{
+    font-size: 24px;
+    font-weight: 400;
+    color: #901C1C;
+    position: absolute;
+    bottom: -80px;
+    left: 60px;    
+
+}
+
+
+/*Order*/
+
+.numberOne{
+    order: 1;
+    border-top: none!important;
+}
+.numberTwo{
+    order: 2;
+}
+.numberThree{
+    order: 3;
+}
