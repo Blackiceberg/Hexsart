@@ -1,0 +1,64 @@
+/* ===== ADMIN PAGES ===== */
+.comments-filters {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #3498db;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn.active {
+    background: #3498db;
+    color: white;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.users-table th {
+    background: #34495e;
+    color: white;
+    padding: 1rem;
+    text-align: left;
+}
+
+.users-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.users-table tr:last-child td {
+    border-bottom: none;
+}
+
+.role-select {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+}
+
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: white;
+}
+
+.status-active { background: #27ae60; }
+.status-inactive { background: #e74c3c; }
+.status-pending { background: #f39c12; }
+.status-approved { background: #27ae60; }
