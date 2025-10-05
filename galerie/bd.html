@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BD Fantaryou - Hexart</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .chapitres-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .chapitre-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .chapitre-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .chapitre-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .chapitre-info {
+            padding: 1.5rem;
+        }
+        
+        .chapitre-info h3 {
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        
+        .chapitre-info p {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-lecture {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+        
+        .btn-lecture:hover {
+            background: #2980b9;
+        }
+        
+        .theme-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .back-btn {
+            background: #3498db;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-right: 2rem;
+            transition: background 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Fantaryou - The Brook</h1>
+            <p class="subtitle">Les aventures épiques de Fantaryou</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="theme-header">
+            <a href="../index.html" class="back-btn">← Retour à l'accueil</a>
+            <h2 style="color: #2c3e50; margin: 0;">Chapitres disponibles</h2>
+        </div>
+
+        <div class="chapitres-grid">
+            <!-- Chapitre 1 -->
+            <div class="chapitre-card">
+                <img src="../assets/images/BD/Fantaryou-Chapitre-01/covers/Fantaryou-Episode-01.jpg" alt="Chapitre 1">
+                <div class="chapitre-info">
+                    <h3>Chapitre 1 : Le Commencement</h3>
+                    <p>Fantaryou découvre ses pouvoirs dans un monde fantastique. Une aventure épique commence.</p>
+                    <p><strong>31 pages</strong></p>
+                    <a href="../lecture/chapitre.html?bd=Fantaryou&chapitre=chapitre-1" class="btn-lecture">
+                        Lire ce chapitre
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chapitre 2 -->
+            <div class="chapitre-card">
+                <img src="../assets/images/BD/Fantaryou-Chapitre-01/covers/Fantaryou-Episode-02.jpg" alt="Chapitre 2">
+                <div class="chapitre-info">
+                    <h3>Chapitre 2 : La Forêt Mystérieuse</h3>
+                    <p>Une exploration périlleuse dans les forêts enchantées du royaume.</p>
+                    <p><strong>30 pages</strong></p>
+                    <a href="../lecture/chapitre.html?bd=Fantaryou&chapitre=chapitre-2" class="btn-lecture">
+                        Lire ce chapitre
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chapitre 3 -->
+            <div class="chapitre-card">
+                <img src="../assets/images/BD/Fantaryou-Chapitre-01/Episode-03/0.jpg" alt="Chapitre 3">
+                <div class="chapitre-info">
+                    <h3>Chapitre 3 : La Rencontre</h3>
+                    <p>Une alliance inattendue se forme dans les montagnes interdites.</p>
+                    <p><strong>30 pages</strong></p>
+                    <a href="../lecture/chapitre.html?bd=Fantaryou&chapitre=chapitre-3" class="btn-lecture">
+                        Lire ce chapitre
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chapitre 4 -->
+            <div class="chapitre-card">
+                <img src="../assets/images/BD/Fantaryou-Chapitre-01/Episode-04/0.jpg" alt="Chapitre 4">
+                <div class="chapitre-info">
+                    <h3>Chapitre 4 : Le Temple Ancien</h3>
+                    <p>Découverte des secrets ancestraux cachés depuis des millénaires.</p>
+                    <p><strong>32 pages</strong></p>
+                    <a href="../lecture/chapitre.html?bd=Fantaryou&chapitre=chapitre-4" class="btn-lecture">
+                        Lire ce chapitre
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 8px;">
+            <h3>🚀 Plus de chapitres à venir !</h3>
+            <p>D'autres aventures de Fantaryou seront disponibles prochainement.</p>
+        </div>
+    </main>
+
+    <footer style="background: #2c3e50; color: white; text-align: center; padding: 2rem; margin-top: 4rem;">
+        <div class="container">
+            <p>&copy; 2024 Hexart - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>
