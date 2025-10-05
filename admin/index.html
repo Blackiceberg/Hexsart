@@ -3,180 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration - Hexart</title>
+    <title>Connexion Admin - Hexart</title>
     <link rel="stylesheet" href="../assets/css/general.css">
-    <style>
-        .admin-header {
-            background: #2c3e50;
-            color: white;
-            padding: 1rem 0;
-        }
-        
-        .admin-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logout-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .logout-btn:hover {
-            background: #c0392b;
-        }
-        
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: transform 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #3498db;
-        }
-        
-        .admin-menu {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-        
-        .menu-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        
-        .menu-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .back-btn {
-            background: #3498db;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            text-decoration: none;
-            margin-right: 1rem;
-        }
-    </style>
 </head>
 <body>
-    <header class="admin-header">
+    <header>
         <div class="container">
-            <div class="admin-nav">
-                <div>
-                    <a href="../index.html" class="back-btn">← Accueil</a>
-                    <h1 style="display: inline-block; margin: 0;">Tableau de Bord Admin</h1>
-                </div>
-                <button class="logout-btn" onclick="location.href='../index.html'">Retour au site</button>
-            </div>
+            <h1>Hexart - Administration</h1>
+            <p class="subtitle">Espace réservé aux administrateurs</p>
         </div>
     </header>
 
     <main class="container">
-        <div class="admin-stats">
-            <div class="stat-card">
-                <div class="stat-number">12</div>
-                <div>Chapitres publiés</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">156</div>
-                <div>Commentaires total</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">23</div>
-                <div>Commentaires cette semaine</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">1,248</div>
-                <div>Vues total</div>
-            </div>
-        </div>
-
-        <div class="admin-menu">
-            <a href="commentaires.html" class="menu-card">
-                <h3>📝 Gestion des Commentaires</h3>
-                <p>Modérer et répondre aux commentaires</p>
-                <span style="background: #e74c3c; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8rem; margin-top: 0.5rem; display: inline-block;">
-                    3 en attente
-                </span>
-            </a>
+        <div class="login-container">
+            <h2 class="text-center mb-3">Connexion Requise</h2>
             
-            <a href="utilisateurs.html" class="menu-card">
-                <h3>👥 Gestion des Utilisateurs</h3>
-                <p>Gérer les comptes et permissions</p>
-            </a>
+            <div class="info-box">
+                <strong>Accès protégé :</strong> Cette zone est réservée à l'équipe d'administration.
+            </div>
             
-            <a href="../galerie/bd.html" class="menu-card">
-                <h3>📚 Gestion des BD</h3>
-                <p>Ajouter et modifier le contenu</p>
-            </a>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username" class="form-label">Nom d'utilisateur :</label>
+                    <input type="text" id="username" class="form-input" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Mot de passe :</label>
+                    <input type="password" id="password" class="form-input" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+            </form>
             
-            <a href="../index.html" class="menu-card">
-                <h3>👁️ Voir le Site</h3>
-                <p>Accéder au site public</p>
-            </a>
-        </div>
-
-        <!-- Actions rapides -->
-        <div style="background: white; padding: 2rem; border-radius: 8px; margin-top: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-            <h3>⚡ Actions Rapides</h3>
-            <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
-                <button onclick="location.href='commentaires.html'" style="padding: 0.75rem 1.5rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                    Modérer les commentaires
-                </button>
-                <button onclick="location.href='../galerie/bd.html'" style="padding: 0.75rem 1.5rem; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                    Voir les BD
-                </button>
-                <button onclick="alert('Fonctionnalité à venir!')" style="padding: 0.75rem 1.5rem; background: #f39c12; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                    Ajouter un chapitre
-                </button>
+            <div id="errorMessage" class="error-message hidden"></div>
+            
+            <div class="text-center mt-2">
+                <a href="../index.html" class="btn btn-secondary">← Retour au site public</a>
             </div>
         </div>
     </main>
 
     <script>
-        console.log('🔧 Admin - Accès direct activé');
-        
-        // Simulation de données admin
-        function updateStats() {
-            // Ici vous pourriez faire un appel API pour les vraies stats
-            console.log('Mise à jour des statistiques admin');
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (username === 'Blackiceberg' && password === 'Hexsart2025') {
+                localStorage.setItem('adminAuthenticated', 'true');
+                localStorage.setItem('adminLoginTime', new Date().getTime());
+                window.location.href = 'dashboard.html';
+            } else {
+                errorMessage.textContent = 'Identifiants incorrects';
+                errorMessage.classList.remove('hidden');
+                document.getElementById('password').value = '';
+            }
+        });
+
+        if (localStorage.getItem('adminAuthenticated') === 'true') {
+            const loginTime = localStorage.getItem('adminLoginTime');
+            const now = new Date().getTime();
+            const twentyFourHours = 24 * 60 * 60 * 1000;
+            
+            if (now - loginTime < twentyFourHours) {
+                window.location.href = 'dashboard.html';
+            } else {
+                localStorage.removeItem('adminAuthenticated');
+                localStorage.removeItem('adminLoginTime');
+            }
         }
-        
-        updateStats();
     </script>
 </body>
 </html>

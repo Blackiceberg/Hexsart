@@ -5,188 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hexart - Plateforme de Bandes Dessinées</title>
     <link rel="stylesheet" href="assets/css/general.css">
-    <style>
-        .hero-section {
-            background: linear-gradient(135deg, rgba(44, 62, 80, 0.9), rgba(74, 100, 145, 0.9)), url('assets/images/BD/Hero/Fantaryou.jpg');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 4rem 0;
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        .hero-title {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .hero-subtitle {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            background: #e74c3c;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: transform 0.3s, background 0.3s;
-            margin: 0 0.5rem;
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-2px);
-            background: #c0392b;
-        }
-        
-        .cta-button.secondary {
-            background: #3498db;
-        }
-        
-        .cta-button.secondary:hover {
-            background: #2980b9;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-        
-        .feature-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .quick-access {
-            background: #f8f9fa;
-            padding: 3rem 0;
-            margin-top: 3rem;
-        }
-    </style>
 </head>
 <body>
+    <!-- Header compact -->
+    <header class="compact-header">
+        <div class="container header-content">
+            <a href="index.html" class="logo">HEXART</a>
+            <nav class="nav-links">
+                <a href="index.html">Accueil</a>
+                <a href="galerie/bd.html">BD</a>
+                <a href="admin/index.html">Admin</a>
+            </nav>
+        </div>
+    </header>
+
     <!-- Hero Section -->
     <section class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">Hexart</h1>
-            <p class="hero-subtitle">Découvrez l'univers fantastique de Fantaryou et bien plus encore</p>
-            <div>
-                <a href="galerie/bd.html" class="cta-button">📚 Explorer les BD</a>
-                <a href="admin/dashboard.html" class="cta-button secondary">⚙️ Administration</a>
-            </div>
+        <div class="container">
+            <h1 class="hero-title">Découvrez l'univers Fantaryou</h1>
+            <p class="subtitle">Plongez dans une aventure fantastique épique</p>
+            <a href="galerie/bd.html" class="btn btn-primary">📚 Commencer la lecture</a>
         </div>
     </section>
 
     <main class="container">
         <!-- BD à la une -->
-        <section>
-            <h2 style="text-align: center; margin-bottom: 2rem; color: #2c3e50;">🎭 BD en Vedette</h2>
-            <div class="gallery" id="gallery">
-                <!-- Fantaryou -->
+        <section class="mb-4">
+            <h2 class="text-center mb-3">🎭 Bandes Dessinées</h2>
+            <div class="gallery">
                 <a href="galerie/bd.html" class="gallery-item">
-                    <img src="assets/images/BD/Hero/Fantaryou.jpg" alt="Fantaryou - The Brook">
+                    <img src="assets/images/BD/Hero/Fantaryou.jpg" alt="Fantaryou - The Brook" onerror="this.style.display='none'">
                     <div class="image-info">
-                        <h3>The Brook - Fantaryou</h3>
-                        <p>Découvrez les aventures épiques de Fantaryou dans un monde fantastique rempli de magie et de mystères.</p>
-                        <span class="image-category">Fantasy • Aventure</span>
+                        <h3 class="image-title">The Brook - Fantaryou</h3>
+                        <p>Une épopée fantastique dans un monde rempli de magie et de mystères.</p>
+                        <span class="image-category">Fantasy • Aventure • 12 chapitres</span>
                     </div>
                 </a>
-                
-                <!-- Placeholder pour futures BD -->
-                <div class="gallery-item" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🚧</div>
-                    <h3>Nouvelle BD à venir</h3>
-                    <p>Prochainement sur Hexart</p>
-                </div>
-                
-                <div class="gallery-item" style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎨</div>
-                    <h3>Projet Secret</h3>
-                    <p>En développement</p>
-                </div>
             </div>
         </section>
 
         <!-- Features -->
-        <section class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">📖</div>
-                <h3>Lecture Fluide</h3>
-                <p>Navigation intuitive entre les chapitres avec optimisation pour mobile et desktop.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3>Communauté Active</h3>
-                <p>Échangez avec d'autres fans et partagez vos théories sur l'univers de Fantaryou.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🚀</div>
-                <h3>Nouveautés Régulières</h3>
-                <p>De nouveaux chapitres et fonctionnalités ajoutés régulièrement.</p>
+        <section class="mb-4">
+            <h2 class="text-center mb-3">✨ Pourquoi Hexart ?</h2>
+            <div class="grid grid-3">
+                <div class="feature-card">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">📖</div>
+                    <h3>Lecture Optimisée</h3>
+                    <p>Navigation fluide entre les pages et chapitres, optimisée pour tous les appareils.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎨</div>
+                    <h3>Artwork Qualité</h3>
+                    <p>Des illustrations de haute qualité pour une immersion totale dans l'univers.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚀</div>
+                    <h3>Mises à Jour</h3>
+                    <p>De nouveaux chapitres régulièrement ajoutés pour suivre l'aventure.</p>
+                </div>
             </div>
         </section>
     </main>
 
-    <!-- Quick Access -->
-    <section class="quick-access">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 2rem; color: #2c3e50;">🔗 Accès Rapide</h2>
-            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                <a href="galerie/bd.html" class="cta-button secondary">📚 Toutes les BD</a>
-                <a href="admin/dashboard.html" class="cta-button">⚙️ Espace Admin</a>
-                <a href="lecture/chapitre.html?bd=Fantaryou&chapitre=chapitre-1" class="cta-button secondary">🎮 Dernier Chapitre</a>
-            </div>
-        </div>
-    </section>
-
-    <footer>
+    <footer style="background: #2c3e50; color: white; text-align: center; padding: 2rem; margin-top: 3rem;">
         <div class="container">
             <p>&copy; 2024 Hexart - Plateforme de bandes dessinées interactives</p>
-            <p style="margin-top: 0.5rem; opacity: 0.8;">
-                <a href="admin/dashboard.html" style="color: inherit;">Administration</a> • 
-                <a href="#" style="color: inherit;">Mentions légales</a>
-            </p>
         </div>
     </footer>
-
-    <script>
-        console.log('🚀 Hexart - Accueil chargé');
-        
-        // Redirection douce pour les liens admin si non connecté
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('a[href*="admin"]')) {
-                const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
-                if (!isLoggedIn) {
-                    e.preventDefault();
-                    window.location.href = 'admin/index.html';
-                }
-            }
-        });
-    </script>
 </body>
 </html>

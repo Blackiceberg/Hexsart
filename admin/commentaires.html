@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Commentaires - Hexart Admin</title>
+    <link rel="stylesheet" href="../assets/css/general.css">
+    <style>
+        .comments-filters {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #3498db;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background: #3498db;
+            color: white;
+        }
+        
+        .comment-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .status-badge {
+            background: #f39c12;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+        
+        .status-approved {
+            background: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (localStorage.getItem('adminAuthenticated') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-nav">
+                <div>
+                    <a href="dashboard.html" class="back-btn">← Tableau de Bord</a>
+                    <h1 style="display: inline-block; margin: 0; margin-left: 1rem;">Gestion des Commentaires</h1>
+                </div>
+                <button class="btn btn-danger" onclick="adminLogout()">Déconnexion</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="comments-filters">
+            <button class="filter-btn active">Tous les commentaires</button>
+            <button class="filter-btn">En attente</button>
+            <button class="filter-btn">Approuvés</button>
+        </div>
+
+        <div class="admin-stats grid grid-3">
+            <div class="stat-card">
+                <div class="stat-number">156</div>
+                <div>Commentaires total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div>En attente</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">153</div>
+                <div>Approuvés</div>
+            </div>
+        </div>
+
+        <div id="commentsContainer">
+            <!-- Commentaire exemple 1 -->
+            <div class="comment">
+                <div class="comment-header">
+                    <div>
+                        <strong>Utilisateur123</strong>
+                        <span class="status-badge">⏳ En attente</span>
+                    </div>
+                    <span style="color: #666; font-size: 0.9rem;">
+                        15 mars 2024 à 14:30
+                    </span>
+                </div>
+                <p>Super chapitre ! J'adore le développement des personnages dans cette histoire.</p>
+                <div class="comment-actions">
+                    <button class="btn btn-primary btn-small">✅ Approuver</button>
+                    <button class="btn btn-danger btn-small">🗑️ Supprimer</button>
+                </div>
+            </div>
+
+            <!-- Commentaire exemple 2 -->
+            <div class="comment">
+                <div class="comment-header">
+                    <div>
+                        <strong>FanBD</strong>
+                        <span class="status-badge status-approved">✅ Approuvé</span>
+                    </div>
+                    <span style="color: #666; font-size: 0.9rem;">
+                        14 mars 2024 à 10:15
+                    </span>
+                </div>
+                <p>Les illustrations sont magnifiques, surtout dans les scènes d'action !</p>
+                <div class="comment-actions">
+                    <button class="btn btn-danger btn-small">🗑️ Supprimer</button>
+                </div>
+            </div>
+
+            <!-- Commentaire exemple 3 -->
+            <div class="comment">
+                <div class="comment-header">
+                    <div>
+                        <strong>NouveauLecteur</strong>
+                        <span class="status-badge">⏳ En attente</span>
+                    </div>
+                    <span style="color: #666; font-size: 0.9rem;">
+                        13 mars 2024 à 16:45
+                    </span>
+                </div>
+                <p>Je viens de découvrir cette BD et je suis déjà accro ! Quand sort le prochain chapitre ?</p>
+                <div class="comment-actions">
+                    <button class="btn btn-primary btn-small">✅ Approuver</button>
+                    <button class="btn btn-danger btn-small">🗑️ Supprimer</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button class="btn btn-secondary">Charger plus de commentaires</button>
+        </div>
+    </main>
+
+    <script>
+        function adminLogout() {
+            localStorage.removeItem('adminAuthenticated');
+            localStorage.removeItem('adminLoginTime');
+            window.location.href = 'index.html';
+        }
+
+        // Filtrage des commentaires
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Ici vous implémenteriez le filtrage réel
+                console.log('Filtre activé:', this.textContent);
+            });
+        });
+    </script>
+</body>
+</html>

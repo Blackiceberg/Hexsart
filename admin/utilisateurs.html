@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Utilisateurs - Hexart Admin</title>
+    <link rel="stylesheet" href="../assets/css/general.css">
+    <style>
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .users-table th {
+            background: #34495e;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        .users-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .users-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .role-select {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: white;
+        }
+        
+        .status-active {
+            background: #27ae60;
+        }
+        
+        .status-inactive {
+            background: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (localStorage.getItem('adminAuthenticated') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-nav">
+                <div>
+                    <a href="dashboard.html" class="back-btn">← Tableau de Bord</a>
+                    <h1 style="display: inline-block; margin: 0; margin-left: 1rem;">Gestion des Utilisateurs</h1>
+                </div>
+                <button class="btn btn-danger" onclick="adminLogout()">Déconnexion</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="admin-stats grid grid-4">
+            <div class="stat-card">
+                <div class="stat-number">45</div>
+                <div>Utilisateurs total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div>Administrateurs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div>Modérateurs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">40</div>
+                <div>Utilisateurs actifs</div>
+            </div>
+        </div>
+
+        <div class="card p-3">
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Email</th>
+                        <th>Rôle</th>
+                        <th>Date création</th>
+                        <th>Statut</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong>Blackiceberg</strong>
+                            <span style="color: #666; font-size: 0.8rem; display: block;">(Vous)</span>
+                        </td>
+                        <td>admin@hexart.com</td>
+                        <td>
+                            <select class="role-select" disabled>
+                                <option value="admin" selected>Administrateur</option>
+                            </select>
+                        </td>
+                        <td>01/01/2024</td>
+                        <td>
+                            <span class="status-badge status-active">Actif</span>
+                        </td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Moderateur1</strong></td>
+                        <td>modo1@hexart.com</td>
+                        <td>
+                            <select class="role-select">
+                                <option value="utilisateur">Utilisateur</option>
+                                <option value="moderateur" selected>Modérateur</option>
+                                <option value="admin">Administrateur</option>
+                            </select>
+                        </td>
+                        <td>15/01/2024</td>
+                        <td>
+                            <span class="status-badge status-active">Actif</span>
+                        </td>
+                        <td style="text-align: center;">
+                            <button class="btn btn-danger btn-small">Désactiver</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>UtilisateurTest</strong></td>
+                        <td>test@hexart.com</td>
+                        <td>
+                            <select class="role-select">
+                                <option value="utilisateur" selected>Utilisateur</option>
+                                <option value="moderateur">Modérateur</option>
+                                <option value="admin">Administrateur</option>
+                            </select>
+                        </td>
+                        <td>20/02/2024</td>
+                        <td>
+                            <span class="status-badge status-inactive">Inactif</span>
+                        </td>
+                        <td style="text-align: center;">
+                            <button class="btn btn-primary btn-small">Activer</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-3">
+            <button class="btn btn-secondary">Exporter la liste</button>
+            <button class="btn btn-primary">Ajouter un utilisateur</button>
+        </div>
+    </main>
+
+    <script>
+        function adminLogout() {
+            localStorage.removeItem('adminAuthenticated');
+            localStorage.removeItem('adminLoginTime');
+            window.location.href = 'index.html';
+        }
+
+        // Gestion des changements de rôle
+        document.querySelectorAll('.role-select').forEach(select => {
+            select.addEventListener('change', function() {
+                console.log('Changement de rôle pour:', this.closest('tr').querySelector('strong').textContent);
+                console.log('Nouveau rôle:', this.value);
+            });
+        });
+    </script>
+</body>
+</html>

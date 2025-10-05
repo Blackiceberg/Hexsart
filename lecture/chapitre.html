@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture du chapitre - Hexart</title>
+    <link rel="stylesheet" href="../assets/css/general.css">
+    <style>
+        .page-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            margin-bottom: 1rem;
+        }
+        
+        .page-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .comments-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .comment {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .comment.pending {
+            border-left: 4px solid #f39c12;
+            background: #fffbf0;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="compact-header">
+        <div class="container header-content">
+            <a href="../index.html" class="logo">HEXART</a>
+            <nav class="nav-links">
+                <a href="../index.html">Accueil</a>
+                <a href="../galerie/bd.html">BD</a>
+                <a href="../admin/index.html">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Navigation entre chapitres -->
+        <div class="reader-controls">
+            <button id="prevChapter" class="btn btn-secondary" disabled>
+                ← Chapitre précédent
+            </button>
+            
+            <div class="text-center">
+                <h2 id="chapterTitle">Chargement...</h2>
+                <p id="pageCounter">Page 1/1</p>
+            </div>
+            
+            <button id="nextChapter" class="btn btn-secondary">
+                Chapitre suivant →
+            </button>
+        </div>
+
+        <!-- Image de la page -->
+        <div class="text-center mb-3">
+            <img id="pageImage" class="page-image" src="" alt="Page de BD">
+        </div>
+
+        <!-- Navigation entre pages -->
+        <div class="page-controls">
+            <button id="prevPage" class="btn btn-primary" disabled>←</button>
+            <span id="currentPage" class="stat-number">1</span>
+            <button id="nextPage" class="btn btn-primary">→</button>
+        </div>
+
+        <!-- Section commentaires -->
+        <section class="comments-section mt-4">
+            <h3 class="text-center mb-3">💬 Commentaires</h3>
+            
+            <div class="info-box text-center">
+                <p>🔒 Connectez-vous pour commenter et participer à la discussion.</p>
+                <a href="../admin/index.html" class="btn btn-primary btn-small">Espace Admin</a>
+            </div>
+            
+            <div id="commentsList" class="mt-3">
+                <div class="comment">
+                    <div class="comment-header">
+                        <strong>Hexart Team</strong>
+                        <span style="color: #666; font-size: 0.9rem;">Aujourd'hui</span>
+                    </div>
+                    <p>Bienvenue sur Hexart ! Cette plateforme est en cours de développement. Les fonctionnalités de commentaires seront bientôt disponibles.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="background: #2c3e50; color: white; text-align: center; padding: 2rem; margin-top: 3rem;">
+        <div class="container">
+            <p>&copy; 2024 Hexart - Utilisez les flèches ← → de votre clavier pour naviguer</p>
+        </div>
+    </footer>
+
+    <script>
+        // Données simulées pour la démonstration
+        const chapitresData = {
+            "chapitre-1": {
+                title: "Chapitre 1 : Le Commencement",
+                pages: 31,
+                currentPage: 0
+            },
+            "chapitre-2": {
+                title: "Chapitre 2 : La Forêt Mystérieuse", 
+                pages: 30,
+                currentPage: 0
+            },
+            "chapitre-3": {
+                title: "Chapitre 3 : La Rencontre",
+                pages: 30,
+                currentPage: 0
+            },
+            "chapitre-4": {
+                title: "Chapitre 4 : Le Temple Ancien",
+                pages: 32,
+                currentPage: 0
+            }
+        };
+
+        const chapitresList = Object.keys(chapitresData);
+        let currentChapitreIndex = 0;
+        let currentPage = 0;
+
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                bd: params.get('bd'),
+                chapitre: params.get('chapitre')
+            };
+        }
+
+        function initializeReader() {
+            const { bd, chapitre } = getUrlParams();
+            
+            if (!bd || !chapitre) {
+                document.getElementById('chapterTitle').textContent = 'Paramètres manquants';
+                return;
+            }
+
+            currentChapitreIndex = chapitresList.indexOf(chapitre);
+            if (currentChapitreIndex === -1) {
+                document.getElementById('chapterTitle').textContent = 'Chapitre non trouvé';
+                return;
+            }
+
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const chapitreId = chapitresList[currentChapitreIndex];
+            const chapitre = chapitresData[chapitreId];
+            
+            document.getElementById('chapterTitle').textContent = chapitre.title;
+            document.getElementById('pageCounter').textContent = `Page ${currentPage + 1}/${chapitre.pages}`;
+            document.getElementById('currentPage').textContent = currentPage + 1;
+            
+            // Simulation d'image (remplacer par vos vraies images)
+            document.getElementById('pageImage').src = `../assets/images/BD/Fantaryou-Chapitre-01/Episode-0${currentChapitreIndex + 1}/${currentPage}.jpg`;
+            document.getElementById('pageImage').alt = `Page ${currentPage + 1}`;
+            
+            // Gestion des boutons
+            document.getElementById('prevPage').disabled = currentPage === 0;
+            document.getElementById('nextPage').disabled = currentPage === chapitre.pages - 1;
+            document.getElementById('prevChapter').disabled = currentChapitreIndex === 0;
+            document.getElementById('nextChapter').disabled = currentChapitreIndex === chapitresList.length - 1;
+        }
+
+        function navigateToPage(page) {
+            const chapitre = chapitresData[chapitresList[currentChapitreIndex]];
+            if (page >= 0 && page < chapitre.pages) {
+                currentPage = page;
+                updateDisplay();
+            }
+        }
+
+        function navigateToChapitre(index) {
+            if (index >= 0 && index < chapitresList.length) {
+                currentChapitreIndex = index;
+                currentPage = 0;
+                
+                // Mettre à jour l'URL sans recharger la page
+                const newUrl = `${window.location.pathname}?bd=Fantaryou&chapitre=${chapitresList[currentChapitreIndex]}`;
+                window.history.pushState({}, '', newUrl);
+                
+                updateDisplay();
+            }
+        }
+
+        // Événements
+        document.getElementById('prevPage').addEventListener('click', () => navigateToPage(currentPage - 1));
+        document.getElementById('nextPage').addEventListener('click', () => navigateToPage(currentPage + 1));
+        document.getElementById('prevChapter').addEventListener('click', () => navigateToChapitre(currentChapitreIndex - 1));
+        document.getElementById('nextChapter').addEventListener('click', () => navigateToChapitre(currentChapitreIndex + 1));
+
+        // Navigation clavier
+        document.addEventListener('keydown', (e) => {
+            const chapitre = chapitresData[chapitresList[currentChapitreIndex]];
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                    if (currentPage > 0) navigateToPage(currentPage - 1);
+                    else if (currentChapitreIndex > 0) navigateToChapitre(currentChapitreIndex - 1);
+                    break;
+                case 'ArrowRight':
+                    if (currentPage < chapitre.pages - 1) navigateToPage(currentPage + 1);
+                    else if (currentChapitreIndex < chapitresList.length - 1) navigateToChapitre(currentChapitreIndex + 1);
+                    break;
+                case 'Home':
+                    navigateToPage(0);
+                    break;
+                case 'End':
+                    navigateToPage(chapitre.pages - 1);
+                    break;
+            }
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', initializeReader);
+    </script>
+</body>
+</html>

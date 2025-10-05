@@ -1,9 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <meta http-equiv="refresh" content="0; url=index.html">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - Hexart Admin</title>
+    <link rel="stylesheet" href="../assets/css/general.css">
 </head>
 <body>
-    Redirection vers l'administration...
+    <script>
+        if (localStorage.getItem('adminAuthenticated') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-nav">
+                <h1>Tableau de Bord Admin</h1>
+                <button class="btn btn-danger" onclick="adminLogout()">Déconnexion</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="admin-stats grid grid-4">
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div>Chapitres publiés</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div>Commentaires en attente</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1</div>
+                <div>BD en ligne</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div>Utilisateurs actifs</div>
+            </div>
+        </div>
+
+        <div class="admin-menu grid grid-2">
+            <a href="commentaires.html" class="menu-card">
+                <h3>📝 Commentaires</h3>
+                <p>Gérer la modération</p>
+            </a>
+            
+            <a href="utilisateurs.html" class="menu-card">
+                <h3>👥 Utilisateurs</h3>
+                <p>Gérer les comptes</p>
+            </a>
+            
+            <a href="../galerie/bd.html" class="menu-card">
+                <h3>📚 Contenu</h3>
+                <p>Gérer les BD</p>
+            </a>
+            
+            <a href="../index.html" class="menu-card">
+                <h3>👁️ Site Public</h3>
+                <p>Voir le site</p>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        function adminLogout() {
+            localStorage.removeItem('adminAuthenticated');
+            localStorage.removeItem('adminLoginTime');
+            window.location.href = 'index.html';
+        }
+
+        setInterval(() => {
+            const loginTime = localStorage.getItem('adminLoginTime');
+            const now = new Date().getTime();
+            const twentyFourHours = 24 * 60 * 60 * 1000;
+            
+            if (now - loginTime > twentyFourHours) {
+                adminLogout();
+            }
+        }, 60000);
+    </script>
 </body>
 </html>
