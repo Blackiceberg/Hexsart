@@ -1,210 +1,215 @@
-import express from 'express';
-import Comment from '../models/Comment.js';
-import { authenticate, authorize, optionalAuth } from '../middleware/auth.js';
+class CommentSystem {
+    constructor() {
+        this.apiBase = 'http://localhost:5000/api';
+        this.currentUser = null;
+        this.token = localStorage.getItem('authToken');
+        this.init();
+    }
 
-const router = express.Router();
+    async init() {
+        await this.checkAuth();
+        this.loadEventListeners();
+    }
 
-// GET /api/comments - Récupérer les commentaires d'un chapitre
-router.get('/', optionalAuth, async (req, res) => {
-    try {
-        const { bd, chapitre, page, limit = 20, sort = '-date' } = req.query;
-
-        if (!bd || !chapitre) {
-            return res.status(400).json({
-                error: 'Les paramètres "bd" et "chapitre" sont requis.'
-            });
+    async checkAuth() {
+        if (this.token) {
+            try {
+                const response = await fetch(`${this.apiBase}/auth/me`, {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    this.currentUser = data.user;
+                    this.updateAuthUI();
+                }
+            } catch (error) {
+                console.error('Erreur vérification auth:', error);
+                this.logout();
+            }
         }
+    }
 
-        // Construction de la query
-        let query = { bdName: bd, chapitreId: chapitre };
-        
-        // Les utilisateurs non authentifiés ne voient que les commentaires approuvés
-        if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'moderateur')) {
-            query.approuve = true;
-        }
-
-        const options = {
-            page: parseInt(page) || 1,
-            limit: parseInt(limit),
-            sort,
-            collation: { locale: 'fr' } // Pour le tri sensible à la locale
-        };
-
-        const comments = await Comment.find(query)
-            .sort(options.sort)
-            .limit(options.limit)
-            .skip((options.page - 1) * options.limit)
-            .lean();
-
-        const total = await Comment.countDocuments(query);
-
-        res.json({
-            comments,
-            pagination: {
-                page: options.page,
-                limit: options.limit,
-                total,
-                pages: Math.ceil(total / options.limit)
+    updateAuthUI() {
+        const authElements = document.querySelectorAll('.auth-status');
+        authElements.forEach(element => {
+            if (this.currentUser) {
+                element.innerHTML = `
+                    <div class="flex-between">
+                        <span>👋 Connecté en tant que <strong>${this.currentUser.username}</strong></span>
+                        <button class="btn btn-danger btn-small" onclick="commentSystem.logout()">Déconnexion</button>
+                    </div>
+                `;
+            } else {
+                element.innerHTML = `
+                    <div class="text-center">
+                        <a href="/admin/index.html" class="btn btn-primary btn-small">🔐 Se connecter</a>
+                        <span class="px-2">pour commenter</span>
+                    </div>
+                `;
             }
         });
-
-    } catch (error) {
-        console.error('Erreur récupération commentaires:', error);
-        res.status(500).json({ 
-            error: 'Erreur lors de la récupération des commentaires.' 
-        });
     }
-});
 
-// POST /api/comments - Ajouter un commentaire
-router.post('/', authenticate, async (req, res) => {
-    try {
-        const { bdName, chapitreId, contenu, page } = req.body;
+    async loadComments(bdName, chapitreId) {
+        try {
+            const response = await fetch(
+                `${this.apiBase}/comments?bd=${bdName}&chapitre=${chapitreId}&limit=50`
+            );
+            
+            if (response.ok) {
+                const data = await response.json();
+                this.displayComments(data.comments);
+            }
+        } catch (error) {
+            console.error('Erreur chargement commentaires:', error);
+            this.displayComments([]);
+        }
+    }
 
-        // Validation
-        if (!bdName || !chapitreId || !contenu) {
-            return res.status(400).json({
-                error: 'Les champs "bdName", "chapitreId" et "contenu" sont requis.'
-            });
+    displayComments(comments) {
+        const container = document.getElementById('commentsList');
+        if (!container) return;
+
+        if (comments.length === 0) {
+            container.innerHTML = `
+                <div class="text-center p-4">
+                    <p>💬 Soyez le premier à commenter cette BD !</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = comments.map(comment => `
+            <div class="comment ${comment.approuve ? '' : 'pending'}">
+                <div class="comment-header">
+                    <div>
+                        <strong>${comment.auteur}</strong>
+                        ${!comment.approuve ? '<span class="status-badge status-pending">⏳ En attente</span>' : ''}
+                    </div>
+                    <span style="color: #666; font-size: 0.9rem;">
+                        ${new Date(comment.date).toLocaleDateString('fr-FR')} à 
+                        ${new Date(comment.date).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}
+                    </span>
+                </div>
+                <p>${comment.contenu}</p>
+                ${this.currentUser && (this.currentUser.role === 'admin' || this.currentUser.role === 'moderateur') && !comment.approuve ? `
+                    <div class="comment-actions">
+                        <button class="btn btn-primary btn-small" onclick="commentSystem.approveComment('${comment._id}')">
+                            ✅ Approuver
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="commentSystem.deleteComment('${comment._id}')">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                ` : ''}
+            </div>
+        `).join('');
+    }
+
+    async submitComment(bdName, chapitreId, contenu, page = 0) {
+        if (!this.currentUser) {
+            alert('Veuillez vous connecter pour commenter');
+            window.location.href = '/admin/index.html';
+            return;
+        }
+
+        if (!contenu.trim()) {
+            alert('Veuillez écrire un commentaire');
+            return;
         }
 
         if (contenu.length < 5) {
-            return res.status(400).json({
-                error: 'Le commentaire doit contenir au moins 5 caractères.'
-            });
+            alert('Le commentaire doit contenir au moins 5 caractères');
+            return;
         }
 
-        // Les admins et modérateurs ont leurs commentaires approuvés automatiquement
-        const isAutoApproved = req.user.role === 'admin' || req.user.role === 'moderateur';
-
-        const newComment = new Comment({
-            auteur: req.user.username,
-            contenu: contenu.trim(),
-            bdName,
-            chapitreId,
-            page: page || 0,
-            approuve: isAutoApproved,
-            ipAddress: req.ip,
-            userAgent: req.get('User-Agent')
-        });
-
-        await newComment.save();
-
-        // Populer les données pour la réponse
-        const commentWithDetails = await Comment.findById(newComment._id).lean();
-
-        res.status(201).json({
-            message: isAutoApproved 
-                ? 'Commentaire publié avec succès.' 
-                : 'Commentaire soumis. Il sera visible après modération.',
-            comment: commentWithDetails
-        });
-
-    } catch (error) {
-        console.error('Erreur création commentaire:', error);
-        
-        if (error.name === 'ValidationError') {
-            const errors = Object.values(error.errors).map(err => err.message);
-            return res.status(400).json({ 
-                error: 'Données invalides', 
-                details: errors 
+        try {
+            const response = await fetch(`${this.apiBase}/comments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.token}`
+                },
+                body: JSON.stringify({
+                    bdName,
+                    chapitreId,
+                    contenu: contenu.trim(),
+                    page
+                })
             });
-        }
 
-        res.status(500).json({ 
-            error: 'Erreur lors de la création du commentaire.' 
-        });
-    }
-});
+            const data = await response.json();
 
-// PATCH /api/comments/:id/approve - Approuver un commentaire
-router.patch('/:id/approve', authenticate, authorize('admin', 'moderateur'), async (req, res) => {
-    try {
-        const comment = await Comment.findByIdAndUpdate(
-            req.params.id,
-            { approuve: true },
-            { new: true, runValidators: true }
-        );
-
-        if (!comment) {
-            return res.status(404).json({ 
-                error: 'Commentaire non trouvé.' 
-            });
-        }
-
-        res.json({
-            message: 'Commentaire approuvé avec succès.',
-            comment
-        });
-
-    } catch (error) {
-        console.error('Erreur approbation commentaire:', error);
-        res.status(500).json({ 
-            error: 'Erreur lors de l\'approbation du commentaire.' 
-        });
-    }
-});
-
-// DELETE /api/comments/:id - Supprimer un commentaire
-router.delete('/:id', authenticate, authorize('admin', 'moderateur'), async (req, res) => {
-    try {
-        const comment = await Comment.findByIdAndDelete(req.params.id);
-
-        if (!comment) {
-            return res.status(404).json({ 
-                error: 'Commentaire non trouvé.' 
-            });
-        }
-
-        res.json({ 
-            message: 'Commentaire supprimé avec succès.' 
-        });
-
-    } catch (error) {
-        console.error('Erreur suppression commentaire:', error);
-        res.status(500).json({ 
-            error: 'Erreur lors de la suppression du commentaire.' 
-        });
-    }
-});
-
-// GET /api/comments/stats - Statistiques des commentaires
-router.get('/stats', authenticate, authorize('admin', 'moderateur'), async (req, res) => {
-    try {
-        const stats = await Comment.getStats();
-        
-        // Commentaires récents (7 derniers jours)
-        const oneWeekAgo = new Date();
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-        
-        const recentStats = await Comment.aggregate([
-            {
-                $match: {
-                    date: { $gte: oneWeekAgo }
-                }
-            },
-            {
-                $group: {
-                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
-                    count: { $sum: 1 }
-                }
-            },
-            {
-                $sort: { _id: 1 }
+            if (response.ok) {
+                alert(data.message);
+                document.getElementById('commentText').value = '';
+                this.loadComments(bdName, chapitreId);
+            } else {
+                alert(data.error || 'Erreur lors de la publication');
             }
-        ]);
+        } catch (error) {
+            console.error('Erreur envoi commentaire:', error);
+            alert('Erreur de connexion');
+        }
+    }
 
-        res.json({
-            ...stats,
-            recentComments: recentStats
-        });
+    async approveComment(commentId) {
+        try {
+            const response = await fetch(`${this.apiBase}/comments/${commentId}/approve`, {
+                method: 'PATCH',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
 
-    } catch (error) {
-        console.error('Erreur récupération stats:', error);
-        res.status(500).json({ 
-            error: 'Erreur lors de la récupération des statistiques.' 
+            if (response.ok) {
+                this.loadComments(currentBD, currentChapitre);
+            }
+        } catch (error) {
+            console.error('Erreur approbation:', error);
+        }
+    }
+
+    async deleteComment(commentId) {
+        if (!confirm('Supprimer définitivement ce commentaire ?')) return;
+
+        try {
+            const response = await fetch(`${this.apiBase}/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+
+            if (response.ok) {
+                this.loadComments(currentBD, currentChapitre);
+            }
+        } catch (error) {
+            console.error('Erreur suppression:', error);
+        }
+    }
+
+    logout() {
+        localStorage.removeItem('authToken');
+        this.token = null;
+        this.currentUser = null;
+        this.updateAuthUI();
+        window.location.reload();
+    }
+
+    loadEventListeners() {
+        // Événement global pour le formulaire de commentaire
+        document.addEventListener('submit', (e) => {
+            if (e.target.id === 'commentForm') {
+                e.preventDefault();
+                const contenu = document.getElementById('commentText').value;
+                this.submitComment(currentBD, currentChapitre, contenu, currentPage);
+            }
         });
     }
-});
+}
 
-export default router;
+// Initialisation globale
+const commentSystem = new CommentSystem();
+
+// Variables globales pour la page de lecture
+let currentBD = 'Fantaryou';
+let currentChapitre = '';
+let currentPage = 0;

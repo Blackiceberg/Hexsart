@@ -3,59 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture du chapitre - Hexart</title>
+    <title>Lecture - Hexart</title>
     <link rel="stylesheet" href="../assets/css/general.css">
     <style>
+        .reader-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .page-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0;
+            gap: 1rem;
+        }
+        
+        .chapter-navigation {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
         .page-image {
             max-width: 100%;
             height: auto;
             border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-            margin-bottom: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            cursor: zoom-in;
+            transition: transform 0.3s;
         }
         
-        .page-controls {
+        .page-image:hover {
+            transform: scale(1.01);
+        }
+        
+        .page-info {
+            text-align: center;
+            margin: 1rem 0;
+            color: #666;
+        }
+        
+        .quick-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+        
+        .quick-nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #3498db;
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        
+        .quick-nav-btn:hover {
+            transform: scale(1.1);
+            background: #2980b9;
+        }
+        
+        .modal-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .chapter-selector {
             background: white;
             padding: 1rem;
             border-radius: 8px;
+            margin: 1rem 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-        
-        .chapter-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .comments-section {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .comment {
-            background: white;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .comment.pending {
-            border-left: 4px solid #f39c12;
-            background: #fffbf0;
-        }
-        
-        .comment-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
         }
     </style>
 </head>
@@ -71,95 +102,213 @@
         </div>
     </header>
 
-    <main class="container">
-        <!-- Navigation entre chapitres -->
+    <main class="container reader-container">
+        <!-- Sélecteur de chapitre -->
+        <div class="chapter-selector">
+            <label for="chapterSelect"><strong>📖 Navigation rapide :</strong></label>
+            <select id="chapterSelect" class="form-input" style="margin-left: 1rem; width: auto;">
+                <option value="">Choisir un chapitre...</option>
+                <option value="chapitre-1">Chapitre 1 - Le Commencement</option>
+                <option value="chapitre-2">Chapitre 2 - La Forêt Mystérieuse</option>
+                <option value="chapitre-3">Chapitre 3 - La Rencontre</option>
+                <option value="chapitre-4">Chapitre 4 - Le Temple Ancien</option>
+                <option value="chapitre-5">Chapitre 5 - La Cité Cachée</option>
+                <option value="chapitre-6">Chapitre 6 - L'Océan des Âmes</option>
+                <option value="chapitre-7">Chapitre 7 - Le Désert des Illusions</option>
+                <option value="chapitre-8">Chapitre 8 - La Forteresse des Ombres</option>
+                <option value="chapitre-9">Chapitre 9 - Le Jardin des Dragons</option>
+                <option value="chapitre-10">Chapitre 10 - Le Labyrinthe du Temps</option>
+                <option value="chapitre-11">Chapitre 11 - Le Trône de Cristal</option>
+                <option value="chapitre-12">Chapitre 12 - L'Aube Nouvelle</option>
+            </select>
+            <a href="../galerie/bd.html" class="btn btn-secondary" style="margin-left: 1rem;">
+                ← Retour aux chapitres
+            </a>
+        </div>
+
+        <!-- Navigation principale -->
         <div class="reader-controls">
-            <button id="prevChapter" class="btn btn-secondary" disabled>
-                ← Chapitre précédent
-            </button>
-            
-            <div class="text-center">
-                <h2 id="chapterTitle">Chargement...</h2>
-                <p id="pageCounter">Page 1/1</p>
+            <div class="chapter-navigation">
+                <button id="prevChapter" class="btn btn-secondary" disabled>
+                    ← Chapitre précédent
+                </button>
+                
+                <div class="text-center" style="min-width: 300px;">
+                    <h2 id="chapterTitle">Chargement...</h2>
+                    <div id="pageCounter" class="page-info">Page 1/1</div>
+                </div>
+                
+                <button id="nextChapter" class="btn btn-secondary">
+                    Chapitre suivant →
+                </button>
             </div>
             
-            <button id="nextChapter" class="btn btn-secondary">
-                Chapitre suivant →
+            <button class="btn btn-primary" onclick="openFullscreen()" title="Plein écran">
+                ⛶ Plein écran
             </button>
         </div>
 
         <!-- Image de la page -->
-        <div class="text-center mb-3">
-            <img id="pageImage" class="page-image" src="" alt="Page de BD">
+        <div class="text-center">
+            <img id="pageImage" class="page-image" src="" alt="Page de BD" onclick="openFullscreen()">
         </div>
 
-        <!-- Navigation entre pages -->
+        <!-- Navigation pages -->
         <div class="page-controls">
-            <button id="prevPage" class="btn btn-primary" disabled>←</button>
-            <span id="currentPage" class="stat-number">1</span>
-            <button id="nextPage" class="btn btn-primary">→</button>
+            <button id="prevPage" class="btn btn-primary" disabled>← Page précédente</button>
+            
+            <div class="text-center">
+                <div id="currentPage" class="stat-number">1</div>
+                <div style="font-size: 0.9rem; color: #666;">Page actuelle</div>
+            </div>
+            
+            <button id="nextPage" class="btn btn-primary">Page suivante →</button>
+        </div>
+
+        <!-- Navigation rapide flottante -->
+        <div class="quick-nav">
+            <button class="quick-nav-btn" onclick="navigateToPage(0)" title="Première page">⏮️</button>
+            <button class="quick-nav-btn" onclick="navigateToPage(Math.max(0, currentPage - 1))" title="Page précédente">◀️</button>
+            <button class="quick-nav-btn" onclick="navigateToPage(Math.min(currentChapitreData.episodes.length - 1, currentPage + 1))" title="Page suivante">▶️</button>
+            <button class="quick-nav-btn" onclick="navigateToPage(currentChapitreData.episodes.length - 1)" title="Dernière page">⏭️</button>
         </div>
 
         <!-- Section commentaires -->
-        <section class="comments-section mt-4">
+        <section class="comments-section">
             <h3 class="text-center mb-3">💬 Commentaires</h3>
             
-            <div class="info-box text-center">
-                <p>🔒 Connectez-vous pour commenter et participer à la discussion.</p>
-                <a href="../admin/index.html" class="btn btn-primary btn-small">Espace Admin</a>
+            <!-- Statut authentification -->
+            <div id="authStatus" class="auth-status mb-3"></div>
+            
+            <!-- Formulaire de commentaire -->
+            <div id="commentFormContainer" class="card p-3 mb-3">
+                <h4>📝 Laisser un commentaire</h4>
+                <form id="commentForm">
+                    <div class="form-group">
+                        <textarea 
+                            id="commentText" 
+                            class="form-textarea" 
+                            placeholder="Partagez vos impressions sur cette page..."
+                            rows="4"
+                        ></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Publier le commentaire</button>
+                </form>
             </div>
             
-            <div id="commentsList" class="mt-3">
-                <div class="comment">
-                    <div class="comment-header">
-                        <strong>Hexart Team</strong>
-                        <span style="color: #666; font-size: 0.9rem;">Aujourd'hui</span>
-                    </div>
-                    <p>Bienvenue sur Hexart ! Cette plateforme est en cours de développement. Les fonctionnalités de commentaires seront bientôt disponibles.</p>
+            <!-- Liste des commentaires -->
+            <div id="commentsList">
+                <div class="text-center p-4">
+                    <p>Chargement des commentaires...</p>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Modal Plein Écran -->
+    <div class="modal" id="imageModal">
+        <span class="close-btn" id="closeModal">&times;</span>
+        <span class="prev-btn" id="prevImageModal">&#10094;</span>
+        <span class="next-btn" id="nextImageModal">&#10095;</span>
+        <img class="modal-content" id="modalImage">
+        <div class="modal-controls">
+            <button class="btn btn-secondary btn-small" onclick="exitFullscreen()">Quitter le plein écran</button>
+        </div>
+    </div>
+
     <footer style="background: #2c3e50; color: white; text-align: center; padding: 2rem; margin-top: 3rem;">
         <div class="container">
-            <p>&copy; 2024 Hexart - Utilisez les flèches ← → de votre clavier pour naviguer</p>
+            <p>© 2024 Hexart - Utilisez les flèches ← → pour naviguer • ESC pour quitter le plein écran</p>
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="../assets/js/comments.js"></script>
     <script>
-        // Données simulées pour la démonstration
+        // Données complètes des 12 chapitres
         const chapitresData = {
             "chapitre-1": {
                 title: "Chapitre 1 : Le Commencement",
-                pages: 31,
-                currentPage: 0
+                description: "Fantaryou découvre ses pouvoirs",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-01", 31, 0)
             },
             "chapitre-2": {
-                title: "Chapitre 2 : La Forêt Mystérieuse", 
-                pages: 30,
-                currentPage: 0
+                title: "Chapitre 2 : La Forêt Mystérieuse",
+                description: "Une exploration périlleuse", 
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-02", 30, 31)
             },
             "chapitre-3": {
                 title: "Chapitre 3 : La Rencontre",
-                pages: 30,
-                currentPage: 0
+                description: "Une alliance inattendue",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-03", 30, 61)
             },
             "chapitre-4": {
                 title: "Chapitre 4 : Le Temple Ancien",
-                pages: 32,
-                currentPage: 0
+                description: "Découverte des secrets ancestraux",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-04", 32, 91)
+            },
+            "chapitre-5": {
+                title: "Chapitre 5 : La Cité Cachée",
+                description: "Exploration des souterrains",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-05", 31, 123)
+            },
+            "chapitre-6": {
+                title: "Chapitre 6 : L'Océan des Âmes",
+                description: "Traversée des eaux mystiques",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-06", 33, 154)
+            },
+            "chapitre-7": {
+                title: "Chapitre 7 : Le Désert des Illusions",
+                description: "Survie dans les sables",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-07", 33, 187)
+            },
+            "chapitre-8": {
+                title: "Chapitre 8 : La Forteresse des Ombres",
+                description: "Infiltration du bastion ennemi",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-08", 31, 220)
+            },
+            "chapitre-9": {
+                title: "Chapitre 9 : Le Jardin des Dragons",
+                description: "Rencontre avec les gardiens",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-09", 32, 251)
+            },
+            "chapitre-10": {
+                title: "Chapitre 10 : Le Labyrinthe du Temps",
+                description: "Course contre la montre",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-10", 32, 283)
+            },
+            "chapitre-11": {
+                title: "Chapitre 11 : Le Trône de Cristal",
+                description: "Confrontation finale",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-11", 32, 315)
+            },
+            "chapitre-12": {
+                title: "Chapitre 12 : L'Aube Nouvelle",
+                description: "Conclusion épique",
+                episodes: generateEpisodes("Fantaryou-Chapitre-01", "Episode-12", 32, 347)
             }
         };
 
+        function generateEpisodes(chapitre, episode, count, start) {
+            const episodes = [];
+            for (let i = 0; i < count; i++) {
+                episodes.push({
+                    id: start + i,
+                    page: i + 1,
+                    url: `../assets/images/BD/${chapitre}/${episode}/${i}.jpg`
+                });
+            }
+            return episodes;
+        }
+
         const chapitresList = Object.keys(chapitresData);
         let currentChapitreIndex = 0;
-        let currentPage = 0;
+        let currentChapitreData = null;
 
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
-                bd: params.get('bd'),
+                bd: params.get('bd') || 'Fantaryou',
                 chapitre: params.get('chapitre')
             };
         }
@@ -167,42 +316,61 @@
         function initializeReader() {
             const { bd, chapitre } = getUrlParams();
             
-            if (!bd || !chapitre) {
-                document.getElementById('chapterTitle').textContent = 'Paramètres manquants';
+            currentBD = bd;
+            currentChapitre = chapitre;
+
+            if (!chapitre || !chapitresData[chapitre]) {
+                // Rediriger vers le premier chapitre si invalide
+                navigateToChapitre(0);
                 return;
             }
 
             currentChapitreIndex = chapitresList.indexOf(chapitre);
-            if (currentChapitreIndex === -1) {
-                document.getElementById('chapterTitle').textContent = 'Chapitre non trouvé';
-                return;
-            }
+            currentChapitreData = chapitresData[chapitre];
+            currentPage = 0;
 
             updateDisplay();
+            updateChapterSelector();
+            
+            // Charger les commentaires
+            commentSystem.loadComments(currentBD, currentChapitre);
         }
 
         function updateDisplay() {
-            const chapitreId = chapitresList[currentChapitreIndex];
-            const chapitre = chapitresData[chapitreId];
-            
-            document.getElementById('chapterTitle').textContent = chapitre.title;
-            document.getElementById('pageCounter').textContent = `Page ${currentPage + 1}/${chapitre.pages}`;
+            if (!currentChapitreData) return;
+
+            document.getElementById('chapterTitle').textContent = currentChapitreData.title;
+            document.getElementById('pageCounter').textContent = `Page ${currentPage + 1}/${currentChapitreData.episodes.length}`;
             document.getElementById('currentPage').textContent = currentPage + 1;
             
-            // Simulation d'image (remplacer par vos vraies images)
-            document.getElementById('pageImage').src = `../assets/images/BD/Fantaryou-Chapitre-01/Episode-0${currentChapitreIndex + 1}/${currentPage}.jpg`;
-            document.getElementById('pageImage').alt = `Page ${currentPage + 1}`;
+            // Mettre à jour l'image
+            const pageImage = document.getElementById('pageImage');
+            if (currentChapitreData.episodes[currentPage]) {
+                pageImage.src = currentChapitreData.episodes[currentPage].url;
+                pageImage.alt = `Page ${currentPage + 1} - ${currentChapitreData.title}`;
+                pageImage.style.display = 'block';
+            } else {
+                pageImage.style.display = 'none';
+            }
             
             // Gestion des boutons
+            updateNavigationButtons();
+        }
+
+        function updateNavigationButtons() {
             document.getElementById('prevPage').disabled = currentPage === 0;
-            document.getElementById('nextPage').disabled = currentPage === chapitre.pages - 1;
+            document.getElementById('nextPage').disabled = currentPage === currentChapitreData.episodes.length - 1;
             document.getElementById('prevChapter').disabled = currentChapitreIndex === 0;
             document.getElementById('nextChapter').disabled = currentChapitreIndex === chapitresList.length - 1;
         }
 
+        function updateChapterSelector() {
+            const selector = document.getElementById('chapterSelect');
+            selector.value = currentChapitre;
+        }
+
         function navigateToPage(page) {
-            const chapitre = chapitresData[chapitresList[currentChapitreIndex]];
-            if (page >= 0 && page < chapitre.pages) {
+            if (currentChapitreData && page >= 0 && page < currentChapitreData.episodes.length) {
                 currentPage = page;
                 updateDisplay();
             }
@@ -211,13 +379,19 @@
         function navigateToChapitre(index) {
             if (index >= 0 && index < chapitresList.length) {
                 currentChapitreIndex = index;
+                currentChapitre = chapitresList[index];
+                currentChapitreData = chapitresData[currentChapitre];
                 currentPage = 0;
                 
-                // Mettre à jour l'URL sans recharger la page
-                const newUrl = `${window.location.pathname}?bd=Fantaryou&chapitre=${chapitresList[currentChapitreIndex]}`;
+                // Mettre à jour l'URL
+                const newUrl = `${window.location.pathname}?bd=${currentBD}&chapitre=${currentChapitre}`;
                 window.history.pushState({}, '', newUrl);
                 
                 updateDisplay();
+                updateChapterSelector();
+                
+                // Recharger les commentaires
+                commentSystem.loadComments(currentBD, currentChapitre);
             }
         }
 
@@ -227,25 +401,97 @@
         document.getElementById('prevChapter').addEventListener('click', () => navigateToChapitre(currentChapitreIndex - 1));
         document.getElementById('nextChapter').addEventListener('click', () => navigateToChapitre(currentChapitreIndex + 1));
 
+        document.getElementById('chapterSelect').addEventListener('change', function() {
+            if (this.value) {
+                const index = chapitresList.indexOf(this.value);
+                if (index !== -1) {
+                    navigateToChapitre(index);
+                }
+            }
+        });
+
         // Navigation clavier
         document.addEventListener('keydown', (e) => {
-            const chapitre = chapitresData[chapitresList[currentChapitreIndex]];
+            if (document.getElementById('imageModal').style.display === 'flex') {
+                // Navigation dans le modal
+                switch(e.key) {
+                    case 'ArrowLeft': 
+                        if (currentPage > 0) navigateToPage(currentPage - 1); 
+                        break;
+                    case 'ArrowRight': 
+                        if (currentPage < currentChapitreData.episodes.length - 1) navigateToPage(currentPage + 1); 
+                        break;
+                }
+            } else {
+                // Navigation normale
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        if (currentPage > 0) navigateToPage(currentPage - 1);
+                        else if (currentChapitreIndex > 0) navigateToChapitre(currentChapitreIndex - 1);
+                        break;
+                    case 'ArrowRight':
+                        if (currentPage < currentChapitreData.episodes.length - 1) navigateToPage(currentPage + 1);
+                        else if (currentChapitreIndex < chapitresList.length - 1) navigateToChapitre(currentChapitreIndex + 1);
+                        break;
+                    case 'Home': navigateToPage(0); break;
+                    case 'End': navigateToPage(currentChapitreData.episodes.length - 1); break;
+                    case ' ': 
+                        e.preventDefault();
+                        if (currentPage < currentChapitreData.episodes.length - 1) navigateToPage(currentPage + 1);
+                        break;
+                }
+            }
+        });
+
+        // Gestion du modal
+        function openFullscreen() {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
             
-            switch(e.key) {
-                case 'ArrowLeft':
-                    if (currentPage > 0) navigateToPage(currentPage - 1);
-                    else if (currentChapitreIndex > 0) navigateToChapitre(currentChapitreIndex - 1);
-                    break;
-                case 'ArrowRight':
-                    if (currentPage < chapitre.pages - 1) navigateToPage(currentPage + 1);
-                    else if (currentChapitreIndex < chapitresList.length - 1) navigateToChapitre(currentChapitreIndex + 1);
-                    break;
-                case 'Home':
-                    navigateToPage(0);
-                    break;
-                case 'End':
-                    navigateToPage(chapitre.pages - 1);
-                    break;
+            if (currentChapitreData && currentChapitreData.episodes[currentPage]) {
+                modalImage.src = currentChapitreData.episodes[currentPage].url;
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeFullscreen() {
+            document.getElementById('imageModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function exitFullscreen() { closeFullscreen(); }
+
+        document.getElementById('closeModal').addEventListener('click', closeFullscreen);
+        document.getElementById('prevImageModal').addEventListener('click', () => {
+            if (currentPage > 0) {
+                navigateToPage(currentPage - 1);
+                updateModalImage();
+            }
+        });
+        document.getElementById('nextImageModal').addEventListener('click', () => {
+            if (currentPage < currentChapitreData.episodes.length - 1) {
+                navigateToPage(currentPage + 1);
+                updateModalImage();
+            }
+        });
+
+        function updateModalImage() {
+            const modalImage = document.getElementById('modalImage');
+            if (currentChapitreData && currentChapitreData.episodes[currentPage]) {
+                modalImage.src = currentChapitreData.episodes[currentPage].url;
+            }
+        }
+
+        document.getElementById('imageModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('imageModal')) {
+                closeFullscreen();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('imageModal').style.display === 'flex') {
+                closeFullscreen();
             }
         });
 
