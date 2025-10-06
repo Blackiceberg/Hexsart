@@ -5,75 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion Admin - Hexart</title>
     <link rel="stylesheet" href="../assets/css/general.css">
+    <link rel="stylesheet" href="../assets/css/universal.css">
+    <style>
+        .auth-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .admin-preview {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="container">
             <h1>Hexart - Administration</h1>
-            <p class="subtitle">Espace réservé aux administrateurs</p>
+            <p class="subtitle">Espace de gestion unifié</p>
         </div>
     </header>
 
     <main class="container">
-        <div class="login-container">
-            <h2 class="text-center mb-3">Connexion Requise</h2>
+        <div class="auth-container">
+            <h2 style="text-align: center;">Connexion</h2>
             
-            <div class="info-box">
-                <strong>Accès protégé :</strong> Cette zone est réservée à l'équipe d'administration.
+            <div class="admin-preview">
+                <strong>Comptes de test :</strong><br>
+                • Admin: <code>admin</code> / <code>admin123</code><br>
+                • Modérateur: <code>modo</code> / <code>modo123</code>
             </div>
             
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="username" class="form-label">Nom d'utilisateur :</label>
-                    <input type="text" id="username" class="form-input" required autocomplete="username">
+                    <label>Nom d'utilisateur:</label>
+                    <input type="text" id="username" required>
                 </div>
-                
                 <div class="form-group">
-                    <label for="password" class="form-label">Mot de passe :</label>
-                    <input type="password" id="password" class="form-input" required autocomplete="current-password">
+                    <label>Mot de passe:</label>
+                    <input type="password" id="password" required>
                 </div>
-                
-                <button type="submit" class="btn btn-primary">Se connecter</button>
+                <button type="submit">Se connecter</button>
             </form>
             
-            <div id="errorMessage" class="error-message hidden"></div>
-            
-            <div class="text-center mt-2">
-                <a href="../index.html" class="btn btn-secondary">← Retour au site public</a>
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="../index.html">← Retour au site public</a>
             </div>
         </div>
     </main>
 
+    <script src="auth-system.js"></script>
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('errorMessage');
             
-            if (username === 'Blackiceberg' && password === 'Hexsart2025') {
-                localStorage.setItem('adminAuthenticated', 'true');
-                localStorage.setItem('adminLoginTime', new Date().getTime());
+            if (AuthSystem.login(username, password)) {
                 window.location.href = 'dashboard.html';
             } else {
-                errorMessage.textContent = 'Identifiants incorrects';
-                errorMessage.classList.remove('hidden');
-                document.getElementById('password').value = '';
+                alert('Identifiants incorrects');
             }
         });
 
-        if (localStorage.getItem('adminAuthenticated') === 'true') {
-            const loginTime = localStorage.getItem('adminLoginTime');
-            const now = new Date().getTime();
-            const twentyFourHours = 24 * 60 * 60 * 1000;
-            
-            if (now - loginTime < twentyFourHours) {
-                window.location.href = 'dashboard.html';
-            } else {
-                localStorage.removeItem('adminAuthenticated');
-                localStorage.removeItem('adminLoginTime');
-            }
+        // Rediriger si déjà connecté
+        if (AuthSystem.isLoggedIn()) {
+            window.location.href = 'dashboard.html';
         }
     </script>
 </body>
